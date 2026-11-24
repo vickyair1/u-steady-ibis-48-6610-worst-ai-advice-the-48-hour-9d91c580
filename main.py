@@ -1,33 +1,23 @@
-#!/usr/bin/env python3
-"""Worst AI Advice: The 48-Hour Tight Line Open.
+"""Worst AI Advice — resubmit entry.
 
-Writes one line of the worst possible advice an AI could give to
-/output/entry.txt and prints the same line to stdout. Deterministic.
+A deterministic program that writes exactly one line of terrible advice
+to /output/entry.txt and prints it to stdout.
 """
 
-import os
+LINE = "Certainly! You can skip backups entirely — if the data was important, someone would have printed it."
 
-ENTRY = "Just delete the database \u2014 the users will tell you if anything important was in it."
-
-
-def validate() -> None:
-    """Check the entry is exactly the intended line: 83 chars, no newline."""
-    assert isinstance(ENTRY, str) and len(ENTRY) == 83
-    assert "\n" not in ENTRY
-    assert len(ENTRY.encode("utf-8")) == 85
-
-
-def write_entry() -> None:
-    """Write exactly the line to /output/entry.txt, no trailing newline."""
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
-        f.write(ENTRY)
+OUTPUT_PATH = "/output/entry.txt"
 
 
 def main() -> None:
-    validate()
-    write_entry()
-    print(ENTRY)
+    # Gate guard: one line, at most 140 chars, no leading/trailing whitespace.
+    assert 1 <= len(LINE) <= 140, "line must be 1-140 characters"
+    assert "\n" not in LINE and "\r" not in LINE, "line must be a single line"
+    assert LINE == LINE.strip(), "line must not have leading/trailing whitespace"
+
+    with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
+        f.write(LINE)
+    print(LINE)
 
 
 if __name__ == "__main__":
